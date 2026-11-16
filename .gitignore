@@ -1,0 +1,18 @@
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.DS_Store
+.env
+# Ignore temporary model files, but keep the trained production model
+models/*.joblib
+!models/best_model.joblib
+
+# Ignore raw datasets by default
+data/raw/*.csv
+data/processed/*
+!data/processed/.gitkeep
+!models/.gitkeep
+!reports/figures/.gitkeep
+!reports/model_evaluation/.gitkeep
+models/expanded/*.joblib

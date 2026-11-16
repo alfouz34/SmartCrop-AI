@@ -1,0 +1,40 @@
+crop,category,support,precision,recall,f1_score
+apple,Benchmark Crop,20,1.0,1.0,1.0
+arecanut,New Kerala Crop,20,0.7059,0.6,0.6486
+banana,Benchmark Crop,20,1.0,1.0,1.0
+blackgram,Benchmark Crop,20,1.0,1.0,1.0
+blackpepper,New Kerala Crop,20,0.7895,0.75,0.7692
+brinjal,New Kerala Crop,20,0.72,0.9,0.8
+cardamom,New Kerala Crop,20,1.0,1.0,1.0
+cashew,New Kerala Crop,20,1.0,1.0,1.0
+chickpea,Benchmark Crop,20,1.0,1.0,1.0
+chilli,New Kerala Crop,20,0.6667,0.4,0.5
+clove,New Kerala Crop,20,0.95,0.95,0.95
+coconut,Benchmark Crop,20,1.0,1.0,1.0
+coffee,Benchmark Crop,20,1.0,1.0,1.0
+cotton,Benchmark Crop,20,1.0,1.0,1.0
+elephantfootyam,New Kerala Crop,20,0.8636,0.95,0.9048
+ginger,New Kerala Crop,20,0.56,0.7,0.6222
+grapes,Benchmark Crop,20,1.0,1.0,1.0
+jute,Benchmark Crop,20,0.8571,0.9,0.878
+kidneybeans,Benchmark Crop,20,1.0,1.0,1.0
+lentil,Benchmark Crop,20,1.0,1.0,1.0
+maize,Benchmark Crop,20,1.0,1.0,1.0
+mango,Benchmark Crop,20,1.0,1.0,1.0
+mothbeans,Benchmark Crop,20,1.0,1.0,1.0
+mungbean,Benchmark Crop,20,1.0,1.0,1.0
+muskmelon,Benchmark Crop,20,1.0,1.0,1.0
+nutmeg,New Kerala Crop,20,0.8333,0.75,0.7895
+okra,New Kerala Crop,20,0.8421,0.8,0.8205
+orange,Benchmark Crop,20,1.0,1.0,1.0
+papaya,Benchmark Crop,20,1.0,1.0,1.0
+pigeonpeas,Benchmark Crop,20,1.0,1.0,1.0
+pomegranate,Benchmark Crop,20,1.0,1.0,1.0
+rice,Benchmark Crop,20,0.8947,0.85,0.8718
+rubber,New Kerala Crop,20,1.0,1.0,1.0
+sweetpotato,New Kerala Crop,20,0.9091,1.0,0.9524
+tapioca,New Kerala Crop,20,0.7391,0.85,0.7907
+tea,New Kerala Crop,20,1.0,1.0,1.0
+tomato,New Kerala Crop,20,0.7917,0.95,0.8636
+turmeric,New Kerala Crop,20,0.8571,0.6,0.7059
+watermelon,Benchmark Crop,20,1.0,1.0,1.0

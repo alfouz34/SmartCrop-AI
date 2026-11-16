@@ -1,0 +1,48 @@
+EXPANDED MODEL EVALUATION: Extra Trees (Expanded)
+Total Classes: 39 | Total Test Samples: 780
+
+                 precision    recall  f1-score   support
+
+          apple       1.00      1.00      1.00        20
+       arecanut       0.71      0.60      0.65        20
+         banana       1.00      1.00      1.00        20
+      blackgram       1.00      1.00      1.00        20
+    blackpepper       0.79      0.75      0.77        20
+        brinjal       0.72      0.90      0.80        20
+       cardamom       1.00      1.00      1.00        20
+         cashew       1.00      1.00      1.00        20
+       chickpea       1.00      1.00      1.00        20
+         chilli       0.67      0.40      0.50        20
+          clove       0.95      0.95      0.95        20
+        coconut       1.00      1.00      1.00        20
+         coffee       1.00      1.00      1.00        20
+         cotton       1.00      1.00      1.00        20
+elephantfootyam       0.86      0.95      0.90        20
+         ginger       0.56      0.70      0.62        20
+         grapes       1.00      1.00      1.00        20
+           jute       0.86      0.90      0.88        20
+    kidneybeans       1.00      1.00      1.00        20
+         lentil       1.00      1.00      1.00        20
+          maize       1.00      1.00      1.00        20
+          mango       1.00      1.00      1.00        20
+      mothbeans       1.00      1.00      1.00        20
+       mungbean       1.00      1.00      1.00        20
+      muskmelon       1.00      1.00      1.00        20
+         nutmeg       0.83      0.75      0.79        20
+           okra       0.84      0.80      0.82        20
+         orange       1.00      1.00      1.00        20
+         papaya       1.00      1.00      1.00        20
+     pigeonpeas       1.00      1.00      1.00        20
+    pomegranate       1.00      1.00      1.00        20
+           rice       0.89      0.85      0.87        20
+         rubber       1.00      1.00      1.00        20
+    sweetpotato       0.91      1.00      0.95        20
+        tapioca       0.74      0.85      0.79        20
+            tea       1.00      1.00      1.00        20
+         tomato       0.79      0.95      0.86        20
+       turmeric       0.86      0.60      0.71        20
+     watermelon       1.00      1.00      1.00        20
+
+       accuracy                           0.92       780
+      macro avg       0.92      0.92      0.92       780
+   weighted avg       0.92      0.92      0.92       780

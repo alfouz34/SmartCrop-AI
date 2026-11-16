@@ -1,0 +1,8 @@
+model,num_classes,total_samples,cv_accuracy_mean,cv_accuracy_std,cv_precision_macro_mean,cv_recall_macro_mean,cv_macro_f1_mean,cv_macro_f1_std,test_accuracy,test_precision_macro,test_recall_macro,test_macro_f1,evaluation_notes
+Random Forest (Original 22-Crop Baseline),22,2200,,,,,0.9937136490573764,,0.9931818181818182,0.9935064935064936,0.993181818181818,0.9931775541531639,Trained exclusively on 22 benchmark crops; completely blind to 17 Kerala crops.
+Extra Trees (Expanded),39,3900,0.9135,0.005,0.9144,0.9135,0.9122,0.0053,0.9218,0.9226,0.9218,0.9197,Expanded 39-crop dataset (22 benchmark + 17 Kerala agricultural staples).
+Random Forest (Expanded),39,3900,0.9115,0.0059,0.9127,0.9115,0.9104,0.0057,0.9218,0.9243,0.9218,0.9204,Expanded 39-crop dataset (22 benchmark + 17 Kerala agricultural staples).
+SVM (Expanded),39,3900,0.8907,0.0084,0.8957,0.8907,0.8893,0.0086,0.8897,0.8931,0.8897,0.8885,Expanded 39-crop dataset (22 benchmark + 17 Kerala agricultural staples).
+KNN (Expanded),39,3900,0.8577,0.0042,0.8649,0.8577,0.8561,0.0047,0.8679,0.8721,0.8679,0.867,Expanded 39-crop dataset (22 benchmark + 17 Kerala agricultural staples).
+Decision Tree (Expanded),39,3900,0.8561,0.0054,0.8616,0.8561,0.8558,0.005,0.8705,0.872,0.8705,0.8691,Expanded 39-crop dataset (22 benchmark + 17 Kerala agricultural staples).
+Random Forest (Geographic Holdout - High Ranges),5,500,,,,,,,0.7419,0.7628,0.7786,0.7232,Trained on midland/coastal/plain districts; tested on held-out High-Range districts (Idukki & Wayanad).

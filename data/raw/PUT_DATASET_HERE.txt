@@ -1,0 +1,2 @@
+Place your Crop_recommendation.csv file in this folder.
+The dataset is not bundled in this ZIP; add the same CSV you used in Google Colab.
