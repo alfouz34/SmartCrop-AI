@@ -227,7 +227,7 @@ Open two separate PowerShell terminal windows:
 
 ### Terminal 1 — Start the FastAPI Backend
 ```powershell
-cd "C:\Users\alfouz\Downloads\SmartCrop_AI_VSCode_Starter\SmartCrop_AI"
+cd "C:\Users\alfouz\OneDrive\Desktop\SmartCrop_AI_VSCode_Starter\SmartCrop_AI"
 $env:PYTHONPATH="."
 & "C:\Users\alfouz\anaconda3\python.exe" -m uvicorn backend.main:app --reload --port 8000
 ```
@@ -236,7 +236,7 @@ $env:PYTHONPATH="."
 
 ### Terminal 2 — Start the Streamlit Dashboard
 ```powershell
-cd "C:\Users\alfouz\Downloads\SmartCrop_AI_VSCode_Starter\SmartCrop_AI"
+cd "C:\Users\alfouz\OneDrive\Desktop\SmartCrop_AI_VSCode_Starter\SmartCrop_AI"
 $env:PYTHONPATH="."
 & "C:\Users\alfouz\anaconda3\python.exe" -m streamlit run frontend/app.py
 ```
@@ -253,12 +253,14 @@ $env:PYTHONPATH="."
 & "C:\Users\alfouz\anaconda3\python.exe" -m pytest -v
 ```
 
-All 7 tests cover:
-1. `GET /health` endpoint availability.
+All 13 tests cover:
+1. `GET /health` endpoint availability and model loading status.
 2. `POST /predict` valid profile predictions (e.g. Rice, Apple).
-3. `POST /predict` invalid input validation (negative pH, missing fields).
+3. `POST /predict` invalid input validation (negative pH out of range, missing fields).
 4. Model prediction logic robustness across array-like and list mocks.
 5. Preprocessing shape integrity and stratified class distributions.
+6. Preservation and integrity of production artifacts and datasets.
+7. Expanded 39-crop schema compliance, row counts, bounds, and provenance tags.
 
 ---
 
