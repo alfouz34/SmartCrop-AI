@@ -1,9 +1,38 @@
+import os
+import sys
+from pathlib import Path
 import requests
 import streamlit as st
 import plotly.express as px
 import pandas as pd
 
-API_URL = "http://127.0.0.1:8000"
+# Ensure project root is in sys.path
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from src.predict import recommend_crops, load_model
+
+API_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
+
+# Check backend availability or initialize standalone model
+api_available = False
+local_model = None
+model_load_error = None
+
+try:
+    health_resp = requests.get(f"{API_URL}/health", timeout=1.0)
+    if health_resp.status_code == 200:
+        api_available = True
+except Exception:
+    api_available = False
+
+if not api_available:
+    try:
+        local_model = load_model()
+    except Exception as exc:
+        local_model = None
+        model_load_error = str(exc)
 
 st.set_page_config(
     page_title="SmartCrop AI",
@@ -17,17 +46,15 @@ st.caption(
     "Decision support tool utilizing machine learning to recommend optimal crops based on soil nutrients and regional climate conditions."
 )
 
-# API Health Check in Sidebar
+# API / Standalone Health Check in Sidebar
 with st.sidebar:
     st.header("⚙️ System Status")
-    try:
-        health_resp = requests.get(f"{API_URL}/health", timeout=3)
-        if health_resp.status_code == 200:
-            st.success("API Connected: Online")
-        else:
-            st.warning("API Status: Degraded")
-    except Exception:
-        st.error("API Status: Offline (Run: uvicorn backend.main:app --reload)")
+    if api_available:
+        st.success("API Connected: Online")
+    elif local_model is not None:
+        st.success("Standalone Mode — Model Loaded")
+    else:
+        st.error(f"Model Load Error: {model_load_error or 'Could not load local model'}")
 
     st.header("🌾 Agricultural Inputs")
 
@@ -89,55 +116,62 @@ if submitted:
         "rainfall": rainfall,
     }
     with st.spinner("Analyzing soil and climate data..."):
-        try:
-            response = requests.post(f"{API_URL}/predict", json=payload, timeout=10)
-            response.raise_for_status()
-            data = response.json()
-            recs = data.get("recommendations", [])
+        recs = None
+        advisory_note = (
+            "Model scores represent statistical algorithm outputs and not guaranteed real-world yield or success. "
+            "Always verify choices with regional agronomists and current market conditions."
+        )
 
+        # 1. Try FastAPI backend if online
+        if api_available:
+            try:
+                response = requests.post(f"{API_URL}/predict", json=payload, timeout=10)
+                if response.status_code == 200:
+                    data = response.json()
+                    recs = data.get("recommendations", [])
+                    advisory_note = data.get("note", advisory_note)
+            except Exception:
+                recs = None
+
+        # 2. Standalone fallback using local production model
+        if recs is None:
+            try:
+                recs = recommend_crops(payload, model=local_model, top_n=3)
+            except Exception as exc:
+                st.error(f"❌ Prediction failed: {exc}")
+
+        if recs:
             st.divider()
             st.markdown("## 🌾 Top 3 Crop Recommendations")
 
-            if recs:
-                cards = st.columns(len(recs))
-                medals = ["🥇 Rank 1", "🥈 Rank 2", "🥉 Rank 3"]
-                for i, (card, item) in enumerate(zip(cards, recs)):
-                    with card:
-                        st.subheader(medals[i] if i < len(medals) else f"Rank {i+1}")
-                        st.metric(label="Recommended Crop", value=item["crop"].title())
-                        if item["score"] is not None:
-                            st.metric(label="Model Prediction Score", value=f"{item['score'] * 100:.1f}%")
+            cards = st.columns(len(recs))
+            medals = ["🥇 Rank 1", "🥈 Rank 2", "🥉 Rank 3"]
+            for i, (card, item) in enumerate(zip(cards, recs)):
+                with card:
+                    st.subheader(medals[i] if i < len(medals) else f"Rank {i+1}")
+                    st.metric(label="Recommended Crop", value=item["crop"].title())
+                    if item["score"] is not None:
+                        st.metric(label="Model Prediction Score", value=f"{item['score'] * 100:.1f}%")
 
-                if all(item["score"] is not None for item in recs):
-                    chart_df = pd.DataFrame(recs)
-                    chart_df["crop_name"] = chart_df["crop"].str.title()
-                    chart_df["score_pct"] = chart_df["score"] * 100
-                    fig = px.bar(
-                        chart_df,
-                        x="crop_name",
-                        y="score_pct",
-                        color="score_pct",
-                        color_continuous_scale="Greens",
-                        text=chart_df["score_pct"].apply(lambda v: f"{v:.1f}%"),
-                        title="Top 3 Crop Prediction Scores",
-                        labels={"crop_name": "Crop", "score_pct": "Model Prediction Score (%)"},
-                        range_y=[0, 105],
-                    )
-                    fig.update_layout(showlegend=False)
-                    st.plotly_chart(fig, use_container_width=True)
-
-            st.warning(
-                "⚠️ **Agronomic Advisory**: " + data.get(
-                    "note",
-                    "Model scores represent statistical algorithm outputs and not guaranteed real-world yield or success. Always verify choices with regional agronomists and current market conditions."
+            if all(item["score"] is not None for item in recs):
+                chart_df = pd.DataFrame(recs)
+                chart_df["crop_name"] = chart_df["crop"].str.title()
+                chart_df["score_pct"] = chart_df["score"] * 100
+                fig = px.bar(
+                    chart_df,
+                    x="crop_name",
+                    y="score_pct",
+                    color="score_pct",
+                    color_continuous_scale="Greens",
+                    text=chart_df["score_pct"].apply(lambda v: f"{v:.1f}%"),
+                    title="Top 3 Crop Prediction Scores",
+                    labels={"crop_name": "Crop", "score_pct": "Model Prediction Score (%)"},
+                    range_y=[0, 105],
                 )
-            )
-        except requests.exceptions.ConnectionError:
-            st.error("❌ Cannot connect to the FastAPI backend. Start it in another terminal: `uvicorn backend.main:app --reload`")
-        except requests.exceptions.HTTPError as exc:
-            st.error(f"❌ API validation error: {exc.response.text}")
-        except Exception as exc:
-            st.error(f"❌ Unexpected error: {exc}")
+                fig.update_layout(showlegend=False)
+                st.plotly_chart(fig, use_container_width=True)
+
+            st.warning("⚠️ **Agronomic Advisory**: " + advisory_note)
 
 st.divider()
 st.header("📊 Understanding the Model")
